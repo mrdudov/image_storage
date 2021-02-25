@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link href="frontend/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -8,8 +9,49 @@
     <title>Document</title>
 </head>
 <body>
-<h1>hello</h1>
+<div class="container">
+<div class="row">
 
-<script src="frontend/index.js"></script>
+{% if user.is_authenticated %}
+    Hello, {{ user.username }}.
+    <button id="log-out-btn" data-href="log-out/" type="button" class="btn btn-primary">Log out</button>
+{% else %}
+
+<h3>user is not authenticated</h3>
+
+
+<form>
+    <div class="mb-3">
+        <label for="InputEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="InputEmail">
+    </div>
+    <div class="mb-3">
+        <label for="InputPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="InputPassword">
+    </div>
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="sign-up-btn" data-href="sign-up/" type="button" class="btn btn-primary">Sign up</button>
+        <button id="sign-in-btn" data-href="sign-in/" type="button" class="btn btn-primary">Sign in</button>
+    </div>
+</form>
+
+
+
+{% endif %}
+
+
+<div  class="row">
+    <pre id="error-field"></pre>
+</div>
+
+
+
+</div>
+</div>
+
+<script src="frontend/js/jquery.js"></script>
+<script src="frontend/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="frontend/js/index.js"></script>
 </body>
 </html>
