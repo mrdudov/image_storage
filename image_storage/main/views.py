@@ -8,9 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-# from django.shortcuts import render
+from django.shortcuts import render
 # from django.conf import settings
-# from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage
 from .forms import SignUpForm
 
 
@@ -77,13 +77,16 @@ def log_out(request):
     return JsonResponse(result)
 
 
-# def simple_upload(request):
-#     if request.method == 'POST' and request.FILES['myfile']:
-#         myfile = request.FILES['myfile']
-#         fs = FileSystemStorage()
-#         filename = fs.save(myfile.name, myfile)
-#         uploaded_file_url = fs.url(filename)
-#         return render(request, 'core/simple_upload.html', {
-#             'uploaded_file_url': uploaded_file_url
-#         })
-#     return render(request, 'core/simple_upload.html')
+@csrf_exempt
+def file_upload(request):
+    if request.method == 'POST' and request.FILES['file']:
+        upload_file = request.FILES['file']
+        fs = FileSystemStorage()
+        filename = fs.save(upload_file.name, upload_file)
+        uploaded_file_url = fs.url(filename)
+
+        return JsonResponse({
+            'message': 'file is uploaded',
+            'uploaded_file_url': uploaded_file_url
+        })
+    return JsonResponse({'error': 'only POST request'})

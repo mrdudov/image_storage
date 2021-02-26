@@ -15,6 +15,12 @@
 {% if user.is_authenticated %}
     Hello, {{ user.username }}.
     <button id="log-out-btn" data-href="log-out/" type="button" class="btn btn-primary">Log out</button>
+
+    <label class="form-label" for="customFile">Default file input example</label>
+    <input type="file" class="form-control" id="customFile" />
+    <button id="file-upload-btn" data-href="file-upload/" type="button" class="btn btn-primary">file upload</button>
+
+
 {% else %}
 
 <h3>user is not authenticated</h3>
