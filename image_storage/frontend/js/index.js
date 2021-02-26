@@ -1,23 +1,29 @@
+
+
+function card_template(item) {
+    result = '<div class="card" style="width: 18rem;"> ' +
+    '<img class="card-img" src="' + item['upload_file'] + '" width="100" height="120">' +
+    '<div class="card-body">' +
+      '<h5 class="card-title">owner ' + item['uploaded_by'] + '</h5>' +
+      '<p class="card-text">' + item['upload_file'] + '</p>' +
+    '</div>' +
+    '<div class="card-footer">' +
+      '<small class="text-muted">upload time ' + item['date'] + '</small>' +
+    ' </div>' +
+    '</div>'
+    return result
+}
+
+
 function load_images() {
     $.get( "get-file-list/", function( data ) {
-        result = '<div class="card-group">'
+//        result = '<div class="card-group">'
+        result = ''
         for (item of data['result']) {
-
-          result += '<div class="card" style="width: 18rem;"> ' +
-            '<img class="card-img" src="' + item['upload_file'] + '" width="100" height="120">' +
-            '<div class="card-body">' +
-              '<h5 class="card-title">owner ' + item['uploaded_by'] + '</h5>' +
-              '<p class="card-text">' + item['upload_file'] + '</p>' +
-            '</div>' +
-            '<div class="card-footer">' +
-              '<small class="text-muted">upload time ' + item['date'] + '</small>' +
-           ' </div>' +
-          '</div>'
-
-
+          result += card_template(item)
         }
-        result += '</div>'
-        $("#image-list").html(result);
+//        result += '</div>'
+        $("#image-list").append(result);
     });
 }
 
@@ -86,7 +92,13 @@ $('#file-upload-btn').on('click', function() {
           contentType: false,
           processData: false,
           success: function(response){
-            console.log(response)
+          tmp = card_template({
+            upload_file: response['upload_file'] ,
+            uploaded_by: response['uploaded_by'] ,
+            date: response['date'] ,
+          })
+          $("#image-list").append(tmp);
+//            console.log(tmp)
           },
        });
     }

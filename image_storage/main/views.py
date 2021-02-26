@@ -96,8 +96,14 @@ def file_upload(request):
             request.FILES
         )
         if form.is_valid():
-            form.save()
-            return JsonResponse({'message': 'file is uploaded'})
+            a = form.save()
+            return JsonResponse({
+                'message': 'file is uploaded',
+                'upload_file': 'media/' + str(a.upload_file),
+                'uploaded_by': request.user.username,
+                'date': str(a.date)
+
+            })
         else:
             return JsonResponse({'error': 'file save error'})
 
