@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.http import HttpResponse, JsonResponse
@@ -10,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
 from .forms import SignUpForm, FileUploadForm
 from .models import ImageStorage
+from django.conf import settings
 
 
 @csrf_exempt
@@ -79,6 +79,12 @@ def log_out(request):
 @csrf_exempt
 def file_upload(request):
     if request.method == 'POST' and request.FILES['upload_file']:
+        if int(request.META['CONTENT_LENGTH']) > int(settings.MAX_UPLOAD_SIZE):
+            return JsonResponse({
+                'error': 'file more then ' + settings.MAX_UPLOAD_SIZE,
+                'size': request.META['CONTENT_LENGTH']
+            })
+
         user = request.user
         upload_file = request.FILES['upload_file']
 

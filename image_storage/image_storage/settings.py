@@ -128,3 +128,5 @@ FRONTEND_ROOT = os.path.join(BASE_DIR, 'frontend')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+CONTENT_TYPES = ['image',]
+MAX_UPLOAD_SIZE = "2097152"
