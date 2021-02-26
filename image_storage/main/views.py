@@ -1,17 +1,13 @@
 from django.contrib.auth import authenticate, login
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
-# from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-from .forms import SignUpForm
+from .forms import SignUpForm, FileUploadForm
 
 
 @csrf_exempt
@@ -77,16 +73,24 @@ def log_out(request):
     return JsonResponse(result)
 
 
+@login_required
 @csrf_exempt
 def file_upload(request):
-    if request.method == 'POST' and request.FILES['file']:
-        upload_file = request.FILES['file']
-        fs = FileSystemStorage()
-        filename = fs.save(upload_file.name, upload_file)
-        uploaded_file_url = fs.url(filename)
+    if request.method == 'POST' and request.FILES['upload_file']:
+        user = request.user
+        upload_file = request.FILES['upload_file']
 
-        return JsonResponse({
-            'message': 'file is uploaded',
-            'uploaded_file_url': uploaded_file_url
-        })
+        form = FileUploadForm(
+            {
+                'upload_file': upload_file,
+                'uploaded_by': user
+            },
+            request.FILES
+        )
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'message': 'file is uploaded'})
+        else:
+            return JsonResponse({'error': 'file save error'})
+
     return JsonResponse({'error': 'only POST request'})

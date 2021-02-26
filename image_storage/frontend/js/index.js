@@ -53,7 +53,8 @@ $('#file-upload-btn').on('click', function() {
     var files = $('#customFile')[0].files;
 
     if(files.length > 0 ) {
-       fd.append('file',files[0]);
+//       fd.append('file',files[0]);
+       fd.append('upload_file',files[0]);
 
        $.ajax({
           url: url,
