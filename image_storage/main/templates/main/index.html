@@ -10,17 +10,23 @@
 </head>
 <body>
 <div class="container">
-<div class="row">
+
 
 {% if user.is_authenticated %}
-    Hello, {{ user.username }}.
-    <button id="log-out-btn" data-href="log-out/" type="button" class="btn btn-primary">Log out</button>
+    <div class="row">
+        Hello, {{ user.username }}.
+
+        <div id="is_user_sign_in" style="display: none;">true</div>
+
+        <button id="log-out-btn" data-href="log-out/" type="button" class="btn btn-primary">Log out</button>
 
     <label class="form-label" for="customFile">Default file input example</label>
     <input type="file" class="form-control" id="customFile" />
     <button id="file-upload-btn" data-href="file-upload/" type="button" class="btn btn-primary">file upload</button>
-
-
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div id="image-list" class="col"></div>
+    </div>
 {% else %}
 
 <h3>user is not authenticated</h3>
@@ -53,7 +59,7 @@
 
 
 
-</div>
+
 </div>
 
 <script src="frontend/js/jquery.js"></script>

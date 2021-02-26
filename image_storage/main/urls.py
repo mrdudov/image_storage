@@ -10,4 +10,5 @@ urlpatterns = [
     path('log-out/', views.log_out),
 
     path('file-upload/', views.file_upload),
+    path('get-file-list/', views.get_file_list),
 ]

@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.http import HttpResponse, JsonResponse
@@ -8,6 +9,7 @@ from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
 from .forms import SignUpForm, FileUploadForm
+from .models import ImageStorage
 
 
 @csrf_exempt
@@ -94,3 +96,20 @@ def file_upload(request):
             return JsonResponse({'error': 'file save error'})
 
     return JsonResponse({'error': 'only POST request'})
+
+
+@login_required
+@csrf_exempt
+def get_file_list(request):
+    user = request.user
+    query = ImageStorage.objects.filter(uploaded_by=user).select_related('uploaded_by')
+    result = []
+    for row in query:
+        result.append({
+            'uploaded_by': row.uploaded_by.username,
+            'upload_file': 'media/' + str(row.upload_file),
+            'date': row.date
+        })
+    return JsonResponse({'result': result}, safe=False)
+
+

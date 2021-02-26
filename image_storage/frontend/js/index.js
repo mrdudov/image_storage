@@ -1,3 +1,27 @@
+function load_images() {
+    $.get( "get-file-list/", function( data ) {
+        result = '<div class="card-group">'
+        for (item of data['result']) {
+
+          result += '<div class="card" style="width: 18rem;"> ' +
+            '<img class="card-img" src="' + item['upload_file'] + '" width="100" height="120">' +
+            '<div class="card-body">' +
+              '<h5 class="card-title">owner ' + item['uploaded_by'] + '</h5>' +
+              '<p class="card-text">' + item['upload_file'] + '</p>' +
+            '</div>' +
+            '<div class="card-footer">' +
+              '<small class="text-muted">upload time ' + item['date'] + '</small>' +
+           ' </div>' +
+          '</div>'
+
+
+        }
+        result += '</div>'
+        $("#image-list").html(result);
+    });
+}
+
+
 $('#sign-up-btn').on('click', function(){
     url = $(this).data('href')
     email = $('#InputEmail').val()
@@ -52,8 +76,7 @@ $('#file-upload-btn').on('click', function() {
     var fd = new FormData();
     var files = $('#customFile')[0].files;
 
-    if(files.length > 0 ) {
-//       fd.append('file',files[0]);
+    if(files.length > 0) {
        fd.append('upload_file',files[0]);
 
        $.ajax({
@@ -66,9 +89,16 @@ $('#file-upload-btn').on('click', function() {
             console.log(response)
           },
        });
-    }else{
+    }
+    else {
        alert("Please select a file.");
     }
 
 
 })
+
+
+
+$(document).ready(function() {
+    load_images()
+});
