@@ -130,3 +130,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CONTENT_TYPES = ['image',]
 MAX_UPLOAD_SIZE = "2097152"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'storageimage867@gmail.com'
+EMAIL_HOST_PASSWORD = 'cCnT9edZJCzirN2'

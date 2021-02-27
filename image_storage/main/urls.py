@@ -11,4 +11,6 @@ urlpatterns = [
 
     path('file-upload/', views.file_upload),
     path('get-file-list/', views.get_file_list),
+
+    path('email/', views.email),
 ]

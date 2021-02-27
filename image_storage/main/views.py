@@ -9,7 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
 from .forms import SignUpForm, FileUploadForm
 from .models import ImageStorage
+from .email_send import email_sender
 from django.conf import settings
+from django.core.mail import send_mail
 
 
 @csrf_exempt
@@ -97,6 +99,15 @@ def file_upload(request):
         )
         if form.is_valid():
             a = form.save()
+
+            # логин пользователя
+            # дата - время записи
+            # путь к загруженному файлу
+
+            message = f'{user.username};{a.date};media/{str(a.upload_file)}'
+            recipient = user.username
+            email_sender(message=message, recipient=recipient)
+            
             return JsonResponse({
                 'message': 'file is uploaded',
                 'upload_file': 'media/' + str(a.upload_file),
@@ -125,3 +136,9 @@ def get_file_list(request):
     return JsonResponse({'result': result}, safe=False)
 
 
+@csrf_exempt
+def email(request):
+    message = ''
+    recipient = ''
+    result = email_sender(message=message, recipient=recipient)
+    return JsonResponse(result)
