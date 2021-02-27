@@ -9,10 +9,11 @@ from django.shortcuts import redirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
+from django.conf import settings
+
 from .forms import SignUpForm, FileUploadForm
 from .models import ImageStorage
 from .email_send import email_sender
-from django.conf import settings
 
 
 @csrf_exempt
@@ -51,8 +52,7 @@ def sign_up(request):
         else:
             return JsonResponse({'error': form.errors})
 
-    return JsonResponse({'error': 'only POST request'})\
-
+    return JsonResponse({'error': 'only POST request'})
 
 
 @csrf_exempt
@@ -100,10 +100,6 @@ def file_upload(request):
         )
         if form.is_valid():
             a = form.save()
-
-            # логин пользователя
-            # дата - время записи
-            # путь к загруженному файлу
 
             message = f'{user.username};{a.date};media/{str(a.upload_file)}'
             recipient = user.username
@@ -166,7 +162,13 @@ def image_reload(request):
     except Exception as e:
         return JsonResponse({'error': 'file save error', 'message': str(e)})
 
-    return JsonResponse({'message': 'image reloaded'})
+    return JsonResponse({
+        'message': 'image reloaded',
+        'upload_file': 'media/' + str(image.upload_file),
+        'uploaded_by': request.user.username,
+        'date': str(image.data),
+        'image_id': image_id
+    })
 
 
 @login_required
