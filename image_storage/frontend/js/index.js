@@ -9,6 +9,17 @@ function load_images() {
     })
 }
 
+function images_history_load(image_id) {
+    $("#history-block").html('')
+    $.get("image-history/", {image_id: image_id}, function(data) {
+        result = ''
+        for (item of data['result']) {
+          result += card_template(item, history_reload_btn=false)
+        }
+        $("#history-block").append(result)
+    })
+}
+
 
 $('body').on('click','#file-upload-btn', function() {
     var url = $(this).data('href')
@@ -63,6 +74,15 @@ $('body').on('click', '.image-reload-btn', function(event) {
     })
 })
 
+$('body').on('click', '.image-history-btn', function(event) {
+    var image_id = $(this).data('image-id')
+    images_history_load(image_id)
+})
+
+
+$('body').on('click', '#history-clear-btn', function() {
+    $('#history-block').html('')
+})
 
 
 $(document).ready(function() {
