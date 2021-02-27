@@ -107,7 +107,7 @@ def file_upload(request):
             message = f'{user.username};{a.date};media/{str(a.upload_file)}'
             recipient = user.username
             email_sender(message=message, recipient=recipient)
-            
+
             return JsonResponse({
                 'message': 'file is uploaded',
                 'upload_file': 'media/' + str(a.upload_file),
