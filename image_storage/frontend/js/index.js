@@ -53,7 +53,7 @@ $('body').on('click','#file-upload-btn', function() {
 
 $('body').on('click', '.image-reload-btn', function(event) {
     $('#error-field').text('')
-    var card = $(this).parent().parent()
+    var card = $(this).parent().parent().parent().parent()
     var url = $(this).data('href')
     var image_id = $(this).data('image-id')
     var fd = new FormData();
