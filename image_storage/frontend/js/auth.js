@@ -5,7 +5,7 @@ $('#sign-up-btn').on('click', function(){
 
     $.post(url, { email: email, passwd: passwd } )
     .done(function(data){
-        if(data['error'] == undefined){
+        if('error' in data){
             location.reload();
         }
         else{

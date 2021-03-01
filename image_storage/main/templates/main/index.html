@@ -1,64 +1,169 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link href="frontend/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Image storage</title>
+
+    <link href="frontend/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+              font-size: 3.5rem;
+            }
+        }
+    </style>
+
 </head>
+
+
 <body>
-<div class="container">
 
-
-{% if user.is_authenticated %}
-    <div class="row">
-        Hello, {{ user.username }}.
-        <div id="is_user_sign_in" style="display: none;">true</div>
-
-        <button id="log-out-btn" data-href="log-out/" type="button" class="btn btn-primary">Log out</button>
-        <label class="form-label" for="customFile">Select image</label>
-        <input type="file" class="form-control" id="customFile" accept="image/*," />
-        <button id="file-upload-btn" data-href="file-upload/" type="button" class="btn btn-primary">file upload</button>
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">ЗАДАНИЕ</h4>
+                    <p class="lead text-muted text-start">Создать одностраничный сайт на Django 3.</p>
+                    <p class="lead text-muted text-start">Со страницы можно отправить картинку на сервер в папку 'media' асинхронно (без перезагрузки).</p>
+                    <p class="lead text-muted text-start">Максимальный размер файла ограничивается django и составляет 2 Mb.</p>
+                    <p class="lead text-muted text-start">Отправить может только зарегистрированный пользователь (зарегистрироваться должен самостоятельно).</p>
+                    <p class="lead text-muted text-start">После загрузки файла в базу данных (любая совместимая СУБД) в таблицу записывается 3 отдельных поля: логин пользователя, дата-время записи и путь к загруженному файлу.</p>
+                    <p class="lead text-muted text-start">После записи в базу на эл. почту пользователя отправляется письмо со значениями всех трех полей в теле через точку с запятой.</p>
+                    <p class="lead text-muted text-start">У пользователя должен быть личный кабинет, в котором можно перезагрузить любую из загруженных им картинок.</p>
+                    <p class="lead text-muted text-start">Должна быть возможность посмотреть историю изменений каждого изображения</p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4 class="text-white">Contact</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="https://github.com/mrdudov/image_storage" class="text-white">GitHub</a></li>
+                        <li><a href="mailto: mrdudov@gmail.com" class="text-white">Email me</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row" id="image-list">
-        <div  class="col"></div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <strong>Image Storage</strong>
+            </a>
+
+
+            {% if user.is_authenticated %}
+            <span class="text-white">
+                Hello, {{ user.username }}.
+                <button id="log-out-btn" data-href="log-out/" type="button" class="btn btn-primary">Log out</button>
+            </span>
+            {% endif %}
+
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        </div>
     </div>
-{% else %}
+</header>
 
-<h3>user is not authenticated</h3>
 
-<form>
-    <div class="mb-3">
-        <label for="InputEmail" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="InputEmail">
+<main>
+    {% if user.is_authenticated %}
+        <span id="is_user_sign_in" style="display: none;">true</span>
+    {% endif %}
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                {% if user.is_authenticated %}
+
+                <label for="customFile" class="form-label">Select image</label>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="customFile" accept="image/*," />
+                    <button id="file-upload-btn" data-href="file-upload/" type="button" class="btn btn-primary">file upload</button>
+                </div>
+
+
+                {% else %}
+
+                <form>
+                    <div class="mb-3">
+                        <label for="InputEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="InputEmail">
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="InputPassword">
+                    </div>
+
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button id="sign-up-btn" data-href="sign-up/" type="button" class="btn btn-primary">Sign up</button>
+                        <button id="sign-in-btn" data-href="sign-in/" type="button" class="btn btn-primary">Sign in</button>
+                    </div>
+                </form>
+
+                {% endif %}
+
+
+
+                <div  class="row">
+                    <pre id="error-field"></pre>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {% if user.is_authenticated %}
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div id="image-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label for="InputPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="InputPassword">
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <button id="history-clear-btn" type="button" class="btn btn-primary">history clear</button>
+            </div>
+
+            <div id="history-block" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
+        </div>
     </div>
 
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button id="sign-up-btn" data-href="sign-up/" type="button" class="btn btn-primary">Sign up</button>
-        <button id="sign-in-btn" data-href="sign-in/" type="button" class="btn btn-primary">Sign in</button>
+    {% endif %}
+
+</main>
+
+
+<footer class="text-muted py-5">
+    <div class="container">
+        <p class="float-end mb-1">
+            <a href="#">Back to top</a>
+        </p>
+        <p class="mb-1">Image Storage is &copy; Murat Dudov.</p>
+        <p class="mb-0"><a href="https://github.com/mrdudov/image_storage">GitHub</a>.</p>
     </div>
-</form>
+</footer>
 
-{% endif %}
-    <button id="history-clear-btn" type="button" class="btn btn-primary">history clear</button>
-    <div  id="history-block" class="row"></div>
-
-    <div  class="row">
-        <pre id="error-field"></pre>
-    </div>
-
-</div>
 
 <script src="frontend/js/jquery.js"></script>
 <script src="frontend/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="frontend/js/auth.js"></script>
 <script src="frontend/js/templates.js"></script>
 <script src="frontend/js/index.js"></script>
+
 </body>
 </html>
