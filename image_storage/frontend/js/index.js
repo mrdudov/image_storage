@@ -54,10 +54,13 @@ $('body').on('click','#file-upload-btn', function() {
 $('body').on('click', '.image-reload-btn', function(event) {
     $('#error-field').text('')
     var card = $(this).parent().parent().parent().parent()
+    var input_field = $(card).find('.customFile')
+
     var url = $(this).data('href')
     var image_id = $(this).data('image-id')
     var fd = new FormData();
-    var files = $('#customFile')[0].files
+    console
+    var files = $(input_field)[0].files
 
     if(files.length == 0) {
         alert("Please select a file.")
@@ -79,7 +82,7 @@ $('body').on('click', '.image-reload-btn', function(event) {
                 image_id: response['image_id'] ,
               })
               card.replaceWith(tmp)
-              $('#customFile').val('')
+              input_field.val('')
           }
       }
     })
