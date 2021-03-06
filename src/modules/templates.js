@@ -43,5 +43,3 @@ export function card_template(item, history_reload_btn=true) {
     '</div>'
     return result
 }
-
-
