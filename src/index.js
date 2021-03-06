@@ -42,7 +42,7 @@ $('body').on('click','#file-upload-btn', function() {
             $('#error-field').text(JSON.stringify(response, null, 4))
           }
           else {
-              tmp = card_template({
+              var tmp = card_template({
                   upload_file: response['upload_file'] ,
                   uploaded_by: response['uploaded_by'] ,
                   date: response['date'] ,
@@ -63,7 +63,6 @@ $('body').on('click', '.image-reload-btn', function(event) {
     var url = $(this).data('href')
     var image_id = $(this).data('image-id')
     var fd = new FormData();
-    console
     var files = $(input_field)[0].files
 
     if(files.length == 0) {
@@ -79,7 +78,7 @@ $('body').on('click', '.image-reload-btn', function(event) {
             $('#error-field').text(JSON.stringify(response, null, 4))
           }
           else {
-              tmp = card_template({
+              var tmp = card_template({
                 upload_file: response['upload_file'] ,
                 uploaded_by: response['uploaded_by'] ,
                 date: response['date'] ,
