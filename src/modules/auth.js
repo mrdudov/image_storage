@@ -1,4 +1,6 @@
-$('#sign-up-btn').on('click', function(){
+
+
+$('body').on('click', '#sign-up-btn', function(){
     url = $(this).data('href')
     email = $('#InputEmail').val()
     passwd = $('#InputPassword').val()
@@ -14,7 +16,7 @@ $('#sign-up-btn').on('click', function(){
     })
 })
 
-$('#sign-in-btn').on('click', function(){
+$('body').on('click', '#sign-in-btn', function(){
     url = $(this).data('href')
     email = $('#InputEmail').val()
     passwd = $('#InputPassword').val()
@@ -31,7 +33,7 @@ $('#sign-in-btn').on('click', function(){
 
 })
 
-$('#log-out-btn').on('click', function() {
+$('body').on('click', '#log-out-btn', function() {
 
     url = $(this).data('href')
     $.post(url).done(function(data) {

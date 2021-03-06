@@ -1,9 +1,13 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './modules/auth'
+import { card_template } from './modules/templates'
+import './css/index.css'
 
 function load_images() {
-    $.get("get-file-list/", function(data) {
-        result = ''
-        for (item of data['result']) {
-          result += card_template(item)
+    $.get("get-file-list/", function(data_tmp) {
+        var result = ''
+        for (var i = 0; i < data_tmp['result'].length; i++) {
+            result += card_template(data_tmp['result'][i])
         }
         $("#image-list").append(result)
     })
@@ -11,10 +15,10 @@ function load_images() {
 
 function images_history_load(image_id) {
     $("#history-block").html('')
-    $.get("image-history/", {image_id: image_id}, function(data) {
-        result = ''
-        for (item of data['result']) {
-          result += card_template(item, history_reload_btn=false)
+    $.get("image-history/", {image_id: image_id}, function(data_tmp) {
+        var result = ''
+        for (var i = 0; i < data_tmp['result'].length; i++) {
+          result += card_template(data_tmp['result'][i], false)
         }
         $("#history-block").append(result)
     })
@@ -82,6 +86,7 @@ $('body').on('click', '.image-reload-btn', function(event) {
                 image_id: response['image_id'] ,
               })
               card.replaceWith(tmp)
+              images_history_load(image_id)
               input_field.val('')
           }
       }

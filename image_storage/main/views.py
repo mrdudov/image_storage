@@ -140,7 +140,10 @@ def image_reload(request):
     try:
         image = ImageStorage.objects.get(id=image_id)
     except ImageStorage.DoesNotExist as e:
-        return JsonResponse({'error': 'server error'})
+        return JsonResponse({
+            'error': 'server error',
+            'message': str(e)
+        })
 
     user = request.user
     upload_file = request.FILES['upload_file']
