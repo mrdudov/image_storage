@@ -1,7 +1,10 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './modules/auth'
 import { card_template } from './modules/templates'
 import './css/index.css'
+
 
 function load_images() {
     $.get("get-file-list/", function(data_tmp) {
@@ -103,7 +106,7 @@ $('body').on('click', '#history-clear-btn', function() {
 })
 
 
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
     $('#customFile').val('')
     load_images()
 });
